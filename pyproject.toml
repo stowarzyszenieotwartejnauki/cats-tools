@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "abstractd"
+description = "A module facilitaing various tasks related to the scientific conference handling, built for CATS conferences."
+readme = "README.md"
+version = "1.0.0"
+
+authors = [{name = "Piotr Biegański", email = "pbieganski@fuw.edu.pl"}]
+license = "GPL-3.0-or-later"
+requires-python = ">=3.12"
+
+keywords = [""]
+
+classifiers = [
+    "Natural Language :: Polish",
+    "Topic :: Scientific/Engineering",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.12",
+    "Programmning Languate :: Python :: 3.13",
+    "Programmning Languate :: Python :: 3.14",
+    "Operating System :: Unix",
+    "Environment :: Console"
+]
+
+dependencies = ['numpy~=2.3.0',
+        'pandas[excel]~=3.0.0',
+        'dearpygui~=2.1.1'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/stowarzyszenieotwartejnauki/cats-tools"

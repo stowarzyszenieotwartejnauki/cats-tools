@@ -1,0 +1,58 @@
+[forms]
+col_names = ["t", "email", "imię", "nazwisko", "afiliacja", "dieta", "typ",
+             "fil_tytuł", "fil_obszar", "fil_teza", "fil_kontekst", "fil_opis", "fil_podsumowanie", "fil_klucze",
+             "teo_tytuł", "teo_obszar", "teo_problem", "teo_kontekst", "teo_metodologia", "teo_wyniki", "teo_podsumowanie", "teo_klucze",
+             "emp_tytuł", "emp_obszar", "emp_problem", "emp_kontekst", "emp_metodologia", "emp_wyniki", "emp_podsumowanie", "emp_klucze",
+             "współautorzy", "finanse", "dummy_1", "dummy_2", "dummy_3"]  # każda kolumna z formsów musi mieć swoją unikalną nazwę. Jeśli są unikalne w formsach, można tej zmiennej dać wartość false.
+
+abstract_types = ["fil", "teo", "emp"]  # każde pole związane z abstraktem danego rodzaju musi mieć format przedrostek_unikalneId (jak wyżej w przykładzie)
+abstract_types_labels = ["filozoficzny", "teoretyczny", "empiryczny"]  # w tej samej kolejności co przedrostki
+bierny = "Bierny"  # jak nazywa się w formsach opcja biernego uczestnictwa
+skip = 0  # jeśli pierwsze kilka wypełnień ankiety to były jej testy, to warto je tu wpisać
+
+path = "path_to_xlsx_from_google_forms"
+
+[assessed]
+path = "path_to_csv_with_synced_abstracts"
+abstracts_dir = "folder_for_abstract_exporting_in_txt"
+
+[assessed.status]
+todo = "Do rozpatrzenia"
+ok = "Przyjęty"
+fix = "W poprawie"
+rejected = "Odrzucony"
+
+# poniżej pola dotyczące mejla, który zostanie wysłany do autora
+[ok]
+msg = "Twój abstrakt na XYZ został przyjęty!"
+
+[fix]  # predefiniowane wiadomości dla najczęstszych błędów do poprawy. Można dodać więcej opcji albo jakieś wywalić, każda dostanie swój checkbox w GUI
+teza.label = "Problem/teza"
+teza.msg = "aaaa"
+kontekst.label = "Kontekst"
+kontekst.msg = "aaaa"
+metody.label = "Metodologia"
+metody.msg = "aaaa"
+wyniki.label = "Wyniki"
+wyniki.msg = "aaaa"
+
+msg = "Twój abstrakt wymaga poprawy. Konkretnie do poprawienia są nastuępujące problemy:"
+
+[rejected]
+msg = "Twój abstrakt na XYZ został odrzucony."
+
+[generic_msg]  # początek i koniec każdego mejla
+start = "Hej,\ndzięki za zgłoszenie abstraktu! Chciałbym poinformować, że "
+end = "Pozdrawiam,\nBarczysty Kurczak"
+
+[email]
+title = "Decyzja w sprawie abstraktu na XXX"
+sender = "xyz@xyz.pl"
+smtp = "smtp.xyz.pl"
+password = "aaa"
+name = "XYZ"
+
+[participants]
+path = "path_to_excel"  # to jest tabela z formsów, ale z dodatkową kolumną, która informuje kto zapłacił
+col_name = "Zapłacone"
+paid = 1  # domyślnie 1 == zapłacone, puste == niezapłacone. Użycie innych wartości niż ustawiona tu da błąd
