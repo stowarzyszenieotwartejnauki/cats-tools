@@ -17,11 +17,10 @@ class AbstractProcessor:
         forms = pd.read_excel(self.config['forms']['path'], sheet_name=0, skiprows=self.skip_rows, names=self.config['forms']['col_names'])
         forms = forms[forms.typ != self.config['forms']['bierny']]
         if os.path.exists(self.config['assessed']['path']):
-            csv = pd.read_csv(self.config['assessed']['path'])
+            csv = pd.read_csv(self.config['assessed']['path'], index_col=0)
         else:
             csv = forms
             csv['status'] = [self.config['assessed']['status']['todo']] * len(csv)
-
         if len(forms) > len(csv):
             temp = forms.iloc[len(csv):].copy()
             temp['status'] = [self.config['assessed']['status']['todo']] * len(temp)

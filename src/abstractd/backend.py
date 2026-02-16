@@ -67,7 +67,7 @@ class Backend:
         msg['reply-to'] = self.config['email']['sender']
         msg.set_content(message)
         self.server.sendmail(self.config['email']['sender'], receipent, msg.as_string())
-        print(f"Sent mail to: {receipent}")
+        print(f"Sent mail to: {receipent}\nMESSAGE:\n{message}\n\n")
 
     def mail_message(self) -> str:
         decision = self.config[self.status]['msg']
