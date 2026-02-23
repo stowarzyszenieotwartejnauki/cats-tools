@@ -34,6 +34,8 @@ class AbstractProcessor:
         for type in self.config['forms']['abstract_types']:
             cols = [e for e in self.columns if type == e.split('_')[0]]
             data_here = row[cols]
+            if data_here.isna().iat[-1]:
+                data_here.iat[-1] = ""
             if not np.any(data_here.isna()):
                 for c in cols:
                     abstract += c.split('_')[1].title() + '\n'

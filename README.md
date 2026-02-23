@@ -10,6 +10,7 @@ pip install -e .
 * Zmień nazwę `config_template.toml` na `config.toml`.
 * Uzupełnij/zmodyfikuj pola w `config.toml` zgodnie z komentarzami czy nazwami pól i zmiennych.
 * Następujące kolumny muszą istnieć i mieć **dokładnie** takie nazwy: email, imię, nazwisko.
+* W każdej kategorii plakatów tylko ostatnie pole może być nieobowiązkowe (ale nie musi).
 
 ## Ocena abstraktów
 ### Przepływ pracy
