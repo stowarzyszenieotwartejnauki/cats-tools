@@ -60,7 +60,7 @@ class Backend:
 
     def send_email(self, message: str):
         msg = EmailMessage()
-        receipent = self.abstracts.get_email(self.current_abstract)
+        receipent = self.abstracts.get_email(self.current_abstract).strip()
         msg["Subject"] = self.config['email']['title']
         msg["From"] = formataddr((self.config['email']['name'], self.config['email']['sender']))
         msg["To"] = receipent

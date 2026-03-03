@@ -57,6 +57,7 @@ class Backend:
                    msg.attach(MIMEApplication(f.read(), name=name))
 
         for receipent in self.receipents:
+            receipent = receipent.strip()
             if "To" in msg:
                 msg.replace_header('To', receipent)
             else:
