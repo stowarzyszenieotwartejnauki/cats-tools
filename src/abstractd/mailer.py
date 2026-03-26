@@ -8,6 +8,7 @@ from email.mime.application import MIMEApplication
 from email.utils import formataddr
 import tomllib
 import dearpygui.dearpygui as dpg
+import time
 
 
 class Backend:
@@ -16,19 +17,19 @@ class Backend:
             self.config = tomllib.load(f)
 
         try:
-            self.data = pd.read_excel(self.config['participants']['path'], sheet_name=0, skiprows=self.config['forms']['skip'], names=self.config['forms']['col_names'] + [self.config['participants']['col_name']])
+            self.data = pd.read_excel(self.config['participants']['path'], sheet_name=self.config['participants']['sheet_index'], skiprows=self.config['forms']['skip'], names=self.config['forms']['col_names'] + [self.config['participants']['col_name']])
             self.paid = self.data[self.data[self.config['participants']['col_name']] == self.config['participants']['paid']]['email'].to_list()
             self.not_paid = self.data[self.data[self.config['participants']['col_name']].isna()]['email'].to_list()
-            self.all = pd.read_excel(self.config['participants']['path'], sheet_name=0, skiprows=self.config['forms']['skip'], names=self.config['forms']['col_names'] + [self.config['participants']['col_name']])['email'].to_list()
+            self.all = self.data['email'].to_list()
+            assert len(self.paid) + len(self.not_paid) == len(self.data), "Invalid characters in paid column!"
         except FileNotFoundError:
             self.data = pd.read_excel(self.config['forms']['path'], sheet_name=0, skiprows=self.config['forms']['skip'], names=self.config['forms']['col_names'])
             self.all = self.data['email'].to_list()
             self.paid = []
             self.not_paid = []
-        assert len(self.paid) + len(self.not_paid) == len(self.data), "Invalid characters in paid column!"
 
         self.server = smtplib.SMTP_SSL(self.config['email']['smtp'], context=ssl.create_default_context())
-        self.server.login(self.config['email']['sender'], self.config['email']['password'])
+        self.server.login(self.config['email']['sender'], self.config['email']['password'])  # TODO if u write mail for too long it disconnects from server and right now it requires restart
 
         self.message = ''
         self.subject = ''
@@ -56,6 +57,13 @@ class Backend:
                 with open(attachment, 'rb') as f:
                    msg.attach(MIMEApplication(f.read(), name=name))
 
+        if self.copy:
+            msg['To'] = self.config['email']['sender']
+            self.server.sendmail(self.config['email']['sender'], self.config['email']['sender'], msg.as_string())
+            print(f"Sent mail to: {self.config['email']['sender']}")
+            print('Sleeping 30 s to check if mail is ok')
+            time.sleep(30)
+
         for receipent in self.receipents:
             receipent = receipent.strip()
             if "To" in msg:
@@ -66,10 +74,7 @@ class Backend:
             self.server.sendmail(self.config['email']['sender'], receipent, msg.as_string())
             print(f"Sent mail to: {receipent}")
 
-        if self.copy:
-            msg.replace_header('To', self.config['email']['sender'])
-            self.server.sendmail(self.config['email']['sender'], self.config['email']['sender'], msg.as_string())
-            print(f"Sent mail to: {self.config['email']['sender']}")
+        print("DONE")
 
 
     def send_certificates(self):

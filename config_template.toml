@@ -56,3 +56,4 @@ name = "XYZ"
 path = "path_to_excel"  # to jest tabela z formsów, ale z dodatkową kolumną, która informuje kto zapłacił
 col_name = "Zapłacone"
 paid = 1  # domyślnie 1 == zapłacone, puste == niezapłacone. Użycie innych wartości niż ustawiona tu da błąd
+sheet_index = 0
