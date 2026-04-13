@@ -9,6 +9,7 @@ from email.utils import formataddr
 import tomllib
 import dearpygui.dearpygui as dpg
 import time
+import glob
 
 
 class Backend:
@@ -36,6 +37,8 @@ class Backend:
         self.copy = True
         self.receipents = self.all
         self.attachments = None
+
+        self.data['nazwisko'] = self.data['nazwisko'].apply(lambda s: s.strip())
 
 
     def cleanup(self):
@@ -78,7 +81,28 @@ class Backend:
 
 
     def send_certificates(self):
-        pass
+        certificates = glob.glob(os.path.join(self.config['participants']['certificates_dir'], '*.pdf'))
+        for certificate in certificates:
+            name = '.'.join(os.path.basename(certificate).split('.')[:-1])
+            try:
+                mail = self.data[self.data.nazwisko == name]['email'].to_numpy()[0]
+            except IndexError:
+                print('NIE WYSŁANO:', certificate)
+                continue
+
+            msg = MIMEMultipart()
+            msg["Subject"] = self.config['participants']['certificates_subj']
+            msg["From"] = formataddr((self.config['email']['name'], self.config['email']['sender']))
+            msg['reply-to'] = self.config['email']['sender']
+            body = MIMEText(self.config['participants']['certificates_msg'])
+            msg.attach(body)
+            with open(certificate, 'rb') as f:
+                msg.attach(MIMEApplication(f.read(), name="Certyfikat.pdf"))
+            msg["To"] = mail
+            self.server.sendmail(self.config['email']['sender'], mail, msg.as_string())
+            print(f"Sent mail to: {mail}")
+
+        print("DONE")
 
 
     def text_callback(self, sender, app_data):
@@ -169,19 +193,22 @@ def setup_window(backend: Backend):
 
 
 
-def main():
+def main(mode='mailer'):
     backend = Backend()
-    try:
-        setup_file_selectors(backend)
-        setup_window(backend)
-        dpg.set_primary_window('main', True)
-        dpg.setup_dearpygui()
-        dpg.bind_font(default_font)
-        dpg.show_viewport()
-        dpg.start_dearpygui()
-        dpg.destroy_context()
-    finally:
-        backend.cleanup()
+    if mode == 'mailer':
+        try:
+            setup_file_selectors(backend)
+            setup_window(backend)
+            dpg.set_primary_window('main', True)
+            dpg.setup_dearpygui()
+            dpg.bind_font(default_font)
+            dpg.show_viewport()
+            dpg.start_dearpygui()
+            dpg.destroy_context()
+        finally:
+            backend.cleanup()
+    elif mode == 'certificates':
+        backend.send_certificates()
 
 
 if __name__ == '__main__':

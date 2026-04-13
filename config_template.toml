@@ -41,7 +41,7 @@ msg = "Twój abstrakt wymaga poprawy. Konkretnie do poprawienia są nastuępują
 [rejected]
 msg = "Twój abstrakt na XYZ został odrzucony."
 
-[generic_msg]  # początek i koniec każdego mejla
+[generic_msg]  # początek i koniec każdego mejla (nie w mailerze, tylko w abstractd)
 start = "Hej,\ndzięki za zgłoszenie abstraktu! Chciałbym poinformować, że "
 end = "Pozdrawiam,\nBarczysty Kurczak"
 
@@ -57,3 +57,6 @@ path = "path_to_excel"  # to jest tabela z formsów, ale z dodatkową kolumną, 
 col_name = "Zapłacone"
 paid = 1  # domyślnie 1 == zapłacone, puste == niezapłacone. Użycie innych wartości niż ustawiona tu da błąd
 sheet_index = 0
+certificates_dir = "path_to_folder_with_certificates"  # certifykat powinien mieć nazwę Nazwisko.pdf. Jak nazwiska się powtarzają, to ups!
+certificates_msg = "BRAWO ZA UDZIAŁ"
+certificates_subj = "Certyfikaty uczestnictwa"
