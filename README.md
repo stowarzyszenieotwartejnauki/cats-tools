@@ -38,3 +38,10 @@ Nie ma automatycznego parsowania mejli, bo jest za duże ryzyko, że ludzie nie 
   * W lepszym scenariuszu jest też excel, zawierający jako ostatnią kolumnę zawierającą info o tym, czy uczestnik zapłacił (zgodnie z `config.toml`)
   * .pdf z certyfikatami nazywają się imię_nazwisko.pdf (TODO to jeszcze nie istnieje)
 * Domyślnie kopia wiadomości wysyła się na adres nadawcy, można odhaczyć (znów byłem zbyt leniwy, żeby wysłane pojawiały się w skrzynce wysłanych)
+
+
+## Wysyłka certyfikatów uczestnictwa
+* Trzeba mieć na dysku folder zawierający .pdf nazwane zgodnie z zawartością komórki „nazwisko” w excelu z formsów (np. Kowalski.pdf). Jeśli były dwie osoby o tym samym nazwisku, to upsi dejzi (pewnie najłatwiej zmienić nazwisko w excelu na potrzeby tego skrytpu i inaczej nazwać odpowiedni plik, ono się nigdzie nie pojawi w wiadomości, a wszystkie pliki i tak będą miały nazwę zmienioną na Certyfikat.pdf przed załączeniem).
+* I uzupełnić odpowiednio `config.toml`.
+* Można odpalić jako `python gui.py -c` pomimo, że żadnego gui to nie ma, po prostu rozsyła wiadomości ;))))
+* Jak z jakiegoś powodu jakiś certyfikat się nie wyśle, to się to printuje, można zrobić ręcznie w razie potrzeby.
